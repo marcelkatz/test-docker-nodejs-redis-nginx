@@ -1,0 +1,27 @@
+# version of docker-compose
+version: '3.9'
+# 'services' are equivalent to 'containers'
+services:
+  test-redis:
+    # Use Docker Hub base image 'redis' 
+    image: 'redis:alpine'
+  test-webapp-1:
+    restart: on-failure
+    build: ./test-webapp-1
+    # Specify an array of ports to map
+    ports:
+      - '3008:5000'
+  test-webapp-2:
+    restart: on-failure
+    build: ./test-webapp-2
+    # Specify an array of ports to map
+    ports:
+      - '3009:5000'
+  nginx:
+    build: ./nginx
+    ports:
+    - "80:80"
+    depends_on:
+    - test-webapp-1
+    - test-webapp-2
+
